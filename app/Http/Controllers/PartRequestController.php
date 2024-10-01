@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rma;
 use App\Models\BillToAddress;
 use App\Models\ShipToAddress;
+use App\Models\RequestVerifoneTSAAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -164,6 +165,8 @@ class PartRequestController extends Controller
 
 
         try {
+
+          //  $this->saveRequest($request, 'prCreate');
 
             $validated = $request->validate([
                 'OrderCreateRequest.order.MessageId' => 'required|string',
@@ -676,4 +679,22 @@ class PartRequestController extends Controller
             'message' => 'Test',
         ]);
     }
+
+   /*  private function saveRequest( $request, $nameMetodo = null)
+    {
+
+
+        // Crear una nueva instancia del modelo
+        $requestVerifone = new RequestVerifoneTSAAPI();
+        $requestVerifone->point = $nameMetodo;
+        $requestVerifone->request = json_encode($request->all());
+
+        $requestVerifone->creation = now(); // Establecer la fecha de creación aquí
+        return  $requestVerifone->save(); // Guardar el registro en la base de datos
+
+
+    } */
 }
+
+
+

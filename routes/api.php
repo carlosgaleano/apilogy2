@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PartRequestController;
+use App\Http\Controllers\TestPartRequestController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TestAuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,20 +36,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('acknowledge', [PartRequestController::class, 'acknowledge']);
 });
 
-// Rutas de prueba
-Route::middleware('check.env')->group(function () {
-    Route::post('test/login', [TestAuthController::class, 'login']);
-});
-
-/* if (app()->environment('testing')) {
-    Route::post('test/login', [AuthController::class, 'login']);
-
-    Route::middleware(['auth:sanctum', 'token.expiration'])->group(function () {
-        Route::post('test/prCreate', [PartRequestController::class, 'prCreate']);
-        Route::put('test/prUpdate/{id}', [PartRequestController::class, 'prUpdate']);
-        Route::delete('test/prCancel/{id}', [PartRequestController::class, 'prCancel']);
-        Route::put('test/updateCase', [PartRequestController::class, 'updateCase']);
-        Route::post('test/acknowledge', [PartRequestController::class, 'acknowledge']);
-    });
-}
- */
