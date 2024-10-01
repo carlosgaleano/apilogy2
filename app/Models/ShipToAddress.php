@@ -13,17 +13,17 @@ class ShipToAddress extends Model
     protected $table = 'ship_to_address';  // Nombre de la tabla
 
     protected $fillable = [
-        'Country',
-        'Address1',
-        'Address2',
-        'Address3',
-        'City',
-        'State',
-        'PostalCode',
-        'SiteName',
-        'SiteID',
-        'Contact',
-        'PhoneNo'
+        'country',
+        'address1',
+        'address2',
+        'address3',
+        'city',
+        'state',
+        'postalcode',
+        'sitename',
+        'siteid',
+        'contact',
+        'phoneno'
     ];
 
 

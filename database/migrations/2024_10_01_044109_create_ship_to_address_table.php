@@ -15,17 +15,17 @@ class CreateShipToAddressTable extends Migration
     {
         Schema::create('ship_to_address', function (Blueprint $table) {
             $table->id(); // Clave primaria
-            $table->string('Country'); // País
-            $table->string('Address1'); // Dirección 1
-            $table->string('Address2')->nullable(); // Dirección 2
-            $table->string('Address3')->nullable(); // Dirección 3
-            $table->string('City'); // Ciudad
-            $table->string('State'); // Estado
-            $table->string('PostalCode'); // Código postal
-            $table->string('SiteName'); // Nombre del sitio
-            $table->string('SiteID'); // ID del sitio
-            $table->string('Contact'); // Contacto
-            $table->string('PhoneNo'); // Número de teléfono
+            $table->string('country'); // País
+            $table->string('address1'); // Dirección 1
+            $table->string('address2')->nullable(); // Dirección 2
+            $table->string('address3')->nullable(); // Dirección 3
+            $table->string('city'); // Ciudad
+            $table->string('state'); // Estado
+            $table->string('postalcode'); // Código postal
+            $table->string('sitename'); // Nombre del sitio
+            $table->string('siteid'); // ID del sitio
+            $table->string('contact'); // Contacto
+            $table->string('phoneno'); // Número de teléfono
             $table->timestamps(); // Timestamps para created_at y updated_at
         });
     }

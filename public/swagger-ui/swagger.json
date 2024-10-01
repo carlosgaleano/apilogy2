@@ -1,0 +1,591 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API TSA VERIFONE",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Iniciar sesión",
+                "description": "Autenticar a un usuario y generar un token de acceso",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token generado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "token123456"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales inválidas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Credenciales inválidas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/prCreate": {
+            "post": {
+                "summary": "Create RMA",
+                "description": "Create RMA, para utilizar este método se debe estar autenticado, lo cual se hace con el método login que se encuentra al inicio de esta documentación",
+                "operationId": "45aa7757dc58746f231ea61049001f75",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "OrderCreateRequest": {
+                                        "properties": {
+                                            "order": {
+                                                "properties": {
+                                                    "MessageId": {
+                                                        "type": "string"
+                                                    },
+                                                    "AppID": {
+                                                        "type": "string"
+                                                    },
+                                                    "BPPServiceEndDate": {
+                                                        "type": "string"
+                                                    },
+                                                    "BillToAddress": {
+                                                        "properties": {
+                                                            "Country": {
+                                                                "type": "string"
+                                                            },
+                                                            "Address3": {
+                                                                "type": "string"
+                                                            },
+                                                            "City": {
+                                                                "type": "string"
+                                                            },
+                                                            "Address2": {
+                                                                "type": "string"
+                                                            },
+                                                            "Address1": {
+                                                                "type": "string"
+                                                            },
+                                                            "Contact": {
+                                                                "type": "string"
+                                                            },
+                                                            "PostalCode": {
+                                                                "type": "string"
+                                                            },
+                                                            "SiteName": {
+                                                                "type": "string"
+                                                            },
+                                                            "SiteID": {
+                                                                "type": "string"
+                                                            },
+                                                            "State": {
+                                                                "type": "string"
+                                                            },
+                                                            "PhoneNo": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "BillToSiteOperatingUnit": {
+                                                        "type": "string"
+                                                    },
+                                                    "BillingAccountNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "CancellationAuthorizationNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "CancellationDate": {
+                                                        "type": "string"
+                                                    },
+                                                    "Carrier": {
+                                                        "type": "string"
+                                                    },
+                                                    "CaseId": {
+                                                        "type": "string"
+                                                    },
+                                                    "Condition": {
+                                                        "type": "string"
+                                                    },
+                                                    "ContractID": {
+                                                        "type": "string"
+                                                    },
+                                                    "CustomerItemNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "ExtendedWarrantyObj": {
+                                                        "properties": {
+                                                            "PartDescription": {
+                                                                "type": "string"
+                                                            },
+                                                            "PartNumber": {
+                                                                "type": "string"
+                                                            },
+                                                            "ProductCode": {
+                                                                "type": "string"
+                                                            },
+                                                            "WarrantyEndDate": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "ExternalOrderNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "HeaderNotes": {
+                                                        "type": "string"
+                                                    },
+                                                    "IncomingQTY": {
+                                                        "type": "string"
+                                                    },
+                                                    "IncomingUnitPartNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "IncomingUnitPartNumberDescription": {
+                                                        "type": "string"
+                                                    },
+                                                    "IncomingUnitSerialNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "InternalDepartmentNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "Looper": {
+                                                        "type": "string"
+                                                    },
+                                                    "MRACode": {
+                                                        "type": "string"
+                                                    },
+                                                    "Mkey": {
+                                                        "type": "string"
+                                                    },
+                                                    "MoreInfoNotes": {
+                                                        "type": "string"
+                                                    },
+                                                    "MsgId": {
+                                                        "type": "string"
+                                                    },
+                                                    "OutgoingQTY": {
+                                                        "type": "string"
+                                                    },
+                                                    "OutgoingUnitPartNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "OutgoingUnitPartNumberDescription": {
+                                                        "type": "string"
+                                                    },
+                                                    "PONumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "PRCreationDate": {
+                                                        "type": "string"
+                                                    },
+                                                    "PRDetailNotes": {
+                                                        "type": "string"
+                                                    },
+                                                    "PRStatus": {
+                                                        "type": "string"
+                                                    },
+                                                    "PartRequestDetailNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "PartRequestHeaderID": {
+                                                        "type": "string"
+                                                    },
+                                                    "Priority": {
+                                                        "type": "string"
+                                                    },
+                                                    "ProblemFound": {
+                                                        "type": "string"
+                                                    },
+                                                    "ProductCode": {
+                                                        "type": "string"
+                                                    },
+                                                    "ProductCodeDescription": {
+                                                        "type": "string"
+                                                    },
+                                                    "ReRepairRule": {
+                                                        "type": "string"
+                                                    },
+                                                    "RepairNotes": {
+                                                        "type": "string"
+                                                    },
+                                                    "RepairStatus": {
+                                                        "type": "string"
+                                                    },
+                                                    "ReportedProblem": {
+                                                        "type": "string"
+                                                    },
+                                                    "RequestType": {
+                                                        "type": "string"
+                                                    },
+                                                    "ServiceCenter": {
+                                                        "type": "string"
+                                                    },
+                                                    "ServicePartsObj": {
+                                                        "properties": {
+                                                            "ServiceEndDate": {
+                                                                "type": "string"
+                                                            },
+                                                            "ServicePartDescription": {
+                                                                "type": "string"
+                                                            },
+                                                            "ServicePartNumber": {
+                                                                "type": "string"
+                                                            },
+                                                            "ServiceProductCode": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "ShipToAddress": {
+                                                        "properties": {
+                                                            "Country": {
+                                                                "type": "string"
+                                                            },
+                                                            "Address3": {
+                                                                "type": "string"
+                                                            },
+                                                            "City": {
+                                                                "type": "string"
+                                                            },
+                                                            "Address2": {
+                                                                "type": "string"
+                                                            },
+                                                            "Address1": {
+                                                                "type": "string"
+                                                            },
+                                                            "Contact": {
+                                                                "type": "string"
+                                                            },
+                                                            "PostalCode": {
+                                                                "type": "string"
+                                                            },
+                                                            "SiteName": {
+                                                                "type": "string"
+                                                            },
+                                                            "SiteID": {
+                                                                "type": "string"
+                                                            },
+                                                            "State": {
+                                                                "type": "string"
+                                                            },
+                                                            "PhoneNo": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "ShipToCow": {
+                                                        "type": "string"
+                                                    },
+                                                    "ShipVia": {
+                                                        "type": "string"
+                                                    },
+                                                    "Summary": {
+                                                        "type": "string"
+                                                    },
+                                                    "SupplyCow": {
+                                                        "type": "string"
+                                                    },
+                                                    "TID": {
+                                                        "type": "string"
+                                                    },
+                                                    "UnitWarrantyType": {
+                                                        "type": "string"
+                                                    },
+                                                    "PRAttributes": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "Name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "Value": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "RPIDs": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "RPIDDescription": {
+                                                                    "type": "string"
+                                                                },
+                                                                "RPIDID": {
+                                                                    "type": "string"
+                                                                },
+                                                                "RPIDType": {
+                                                                    "type": "string"
+                                                                },
+                                                                "RPIDWarrantyType": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "messageId": {
+                                            "type": "integer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/prUpdate/{id}": {
+            "put": {
+                "summary": "Update RMA",
+                "operationId": "ca78b1e5966292b58298f7e339691326",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "PONumber": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "messageId": {
+                                            "type": "integer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/prCancel/{id}": {
+            "delete": {
+                "summary": "Cancel RMA",
+                "operationId": "4ab4def0af8f529e3bc6f803599c52fa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "messageId": {
+                                            "type": "integer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/updateCase": {
+            "put": {
+                "summary": "Update Case",
+                "operationId": "454c21d0dc399e9adeccae407f4c2e70",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "messageId": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/acknowledge": {
+            "post": {
+                "summary": "Acknowledge",
+                "operationId": "ba62edfd60b813c1a216a8100969b63f",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "messageId": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticación",
+            "description": "Autenticación"
+        }
+    ]
+}

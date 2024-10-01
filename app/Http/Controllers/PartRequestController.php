@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response as HttpResponse;
 use OpenApi\Annotations as OA;
-
-
-
+use Ramsey\Uuid\Type\Integer;
 
 /**
  * @OA\Info(title="API TSA VERIFONE", version="1.0.0")
@@ -196,11 +194,11 @@ class PartRequestController extends Controller
                     'address2' => $billToAddressData['Address2'],
                     'address1' => $billToAddressData['Address1'],
                     'contact' => $billToAddressData['Contact'],
-                    'postal_code' => $billToAddressData['PostalCode'],
-                    'site_name' => $billToAddressData['SiteName'],
-                    'site_id' => $billToAddressData['SiteID'],
+                    'postalcode' => $billToAddressData['PostalCode'],
+                    'sitename' => $billToAddressData['SiteName'],
+                    'siteid' => $billToAddressData['SiteID'],
                     'state' => $billToAddressData['State'],
-                    'phone_no' => $billToAddressData['PhoneNo'],
+                    'phoneno' => $billToAddressData['PhoneNo'],
                 ]);
             } else {
                 $billToAddress = null;  // Si no hay datos, no se crea el registro
@@ -208,17 +206,17 @@ class PartRequestController extends Controller
 
             if (!empty($order['ShipToAddress'])) {
             $shipToAddress= ShipToAddress::create([
-                'Country' => $order['ShipToAddress']['Country'] ?? '',
-                'Address1' => $order['ShipToAddress']['Address1'] ?? '',
-                'Address2' => $order['ShipToAddress']['Address2'] ?? '',
-                'Address3' => $order['ShipToAddress']['Address3'] ?? '',
-                'City' => $order['ShipToAddress']['City'] ?? '',
-                'State' => $order['ShipToAddress']['State'] ?? '',
-                'PostalCode' => $order['ShipToAddress']['PostalCode'] ?? '',
-                'SiteName' => $order['ShipToAddress']['SiteName'] ?? '',
-                'SiteID' => $order['ShipToAddress']['SiteID'] ?? '',
-                'Contact' => $order['ShipToAddress']['Contact'] ?? '',
-                'PhoneNo' => $order['ShipToAddress']['PhoneNo'] ?? '',
+                'country' => $order['ShipToAddress']['Country'] ?? '',
+                'address1' => $order['ShipToAddress']['Address1'] ?? '',
+                'address2' => $order['ShipToAddress']['Address2'] ?? '',
+                'address3' => $order['ShipToAddress']['Address3'] ?? '',
+                'city' => $order['ShipToAddress']['City'] ?? '',
+                'state' => $order['ShipToAddress']['State'] ?? '',
+                'postalcode' => $order['ShipToAddress']['PostalCode'] ?? '',
+                'sitename' => $order['ShipToAddress']['SiteName'] ?? '',
+                'siteid' => $order['ShipToAddress']['SiteID'] ?? '',
+                'contact' => $order['ShipToAddress']['Contact'] ?? '',
+                'phoneno' => $order['ShipToAddress']['PhoneNo'] ?? '',
             ]);
 
         } else {
@@ -227,6 +225,8 @@ class PartRequestController extends Controller
         }
 
 
+           $incomingQTY=$order['IncomingQTY'] ?? null;
+           $outgoingQTY=$order['outgoingQTY'] ?? null;
 
 
             $rma = RMA::create([
@@ -242,7 +242,7 @@ class PartRequestController extends Controller
                 'shipVia' => $order['ShipVia'] ?? '',
                 'messageType' => $order['messageType'] ?? '',
                 'headerNotes' => $order['headerNotes'] ?? '',
-                'incomingQTY' =>  $order['incomingQTY'] ?? '',
+                'incomingQTY' =>  intval($incomingQTY),
                 'contractID' => $order['contractID'] ?? '',
                 'PRStatus' => $order['PRStatus'] ?? '',
                 'PRCreationDate' => $order['PRCreationDate'] ?? '',
@@ -272,10 +272,10 @@ class PartRequestController extends Controller
                 'billToSiteOperatingUnit' => $order['billToSiteOperatingUnit'] ?? '',
                 'unitWarrantyType' => $order['unitWarrantyType'] ?? '',
                 'repairNotes' => $order['repairNotes'] ?? '',
-                'outgoingQTY' => $order['outgoingQTY'] ?? '',
+                'outgoingQTY' => $outgoingQTY ?? null,
                 'cancellationAuthorizationNumber' => $order['cancellationAuthorizationNumber'] ?? '',
                 'problemFound' => $order['problemFound'] ?? '',
-                'cancellationDate' => $order['cancellationDate'] ?? '',
+                'cancellationDate' => $order['cancellationDate'] ?? null,
                 'billToAddress_id' => $billToAddress ? $billToAddress->id : null,  // Si existe BillToAddress, se guarda su ID
                 'shipToAddress_id' => $shipToAddress  ?  $shipToAddress->id : null,
 
@@ -289,6 +289,7 @@ class PartRequestController extends Controller
                 'data1'=>$order['OutgoingUnitPartNumber'],
                 'data' => $order,
                 'campo' => $request->input('OrderCreateRequest.order.MessageId'),
+              //  'campo2'=> $incomingQTY,
             ]);
         } catch (\Exception $e) {
             return response()->json([

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="swagger-ui.css">
+    <script src="swagger-ui-bundle.js"></script>
+    <script src="swagger-ui-standalone-preset.js"></script>
+    <style>
+        #auth-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #auth-container label {
+            font-weight: bold;
+        }
+        #auth-container input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Formulario para ingresar el token -->
+    <div id="auth-container">
+        <label for="auth-token">Authorization Token:</label>
+        <input type="text" id="auth-token" placeholder="Bearer Token">
+        <button id="auth-button">Set Token</button>
+    </div>
+
+    <div id="swagger-ui"></div>
+
+    <script>
+      window.onload = function() {
+        const ui = SwaggerUIBundle({
+            url: "../../swagger.json", // Ruta al archivo swagger.json
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            layout: "StandaloneLayout",
+            requestInterceptor: (request) => {
+                // Obtén el token del campo de entrada
+                const token = document.getElementById('auth-token').value;
+                if (token) {
+                    // Agrega el token al encabezado Authorization
+                    request.headers['Authorization'] = `Bearer ${token}`;
+                }
+                return request;
+            }
+        });
+      }
+        // Configura el botón para actualizar el token
+        document.getElementById('auth-button').addEventListener('click', () => {
+            ui.authActions.authorize({
+                Bearer: {
+                    name: "Authorization",
+                    schema: {
+                        type: "apiKey",
+                        in: "header",
+                        name: "Authorization"
+                    },
+                    value: `Bearer ${document.getElementById('auth-token').value}`
+                }
+            });
+        });
+    </script>
+    <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
+    <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+    <script src="./swagger-initializer.js" charset="UTF-8"> </script>
+</body>
+</html>

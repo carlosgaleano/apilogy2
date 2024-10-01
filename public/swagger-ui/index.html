@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="swagger-ui.css" >
+    <script src="swagger-ui-bundle.js"></script>
+    <script src="swagger-ui-standalone-preset.js"></script>
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <h1>Swagger UI</h1>
+    <script>
+      const ui = SwaggerUIBundle({
+        url: "swagger.json", // Ruta al archivo swagger.json
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout"
+      });
+    </script>
+  </body>
+</html>

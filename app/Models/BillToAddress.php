@@ -19,17 +19,17 @@ class BillToAddress extends Model
         'address2',
         'address3',
         'city',
-        'contact',
-        'postal_code',
-        'site_name',
-        'site_id',
         'state',
-        'phone_no',
+        'postalcode',
+        'sitename',
+        'siteid',
+        'contact',
+        'phoneno'
     ];
 
 
      // Relación con RMS
-     public function rms()
+      public function rms1()
      {
          return $this->hasMany(Rma::class, 'bill_to_address_id');
      }

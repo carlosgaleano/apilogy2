@@ -12,7 +12,7 @@ class Rma extends Model
     protected $table = 'rmas';  // Nombre de la tabla
 
     protected $fillable = [
-        'PONumber',
+       'PONumber',
         'outgoingUnitPartNumber',
         'looper',
         'reRepairRule',

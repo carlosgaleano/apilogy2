@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+    <style>
+        #auth-container {
+            display: none; /* Oculta el contenedor del token */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="swagger-ui"></div>
+    <script src="./swagger-ui-bundle.js" charset="UTF-8"></script>
+    <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"></script>
+    <script>
+    window.onload = function() {
+    // Limpiar el token de acceso cada vez que se carga la página
+    localStorage.removeItem('access_token');
+
+    const ui = SwaggerUIBundle({
+        url: "../../swagger.json",  // tu archivo Swagger JSON
+        dom_id: '#swagger-ui',
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout",
+        requestInterceptor: (req) => {
+            // No agregar el token para la solicitud de login
+            if (req.url.includes('/api/login')) {
+                return req; // Solo retornar la solicitud sin modificaciones
+            }
+
+            // Si tenemos el token almacenado, lo agregamos a las cabeceras de la solicitud
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                req.headers['Authorization'] = `Bearer ${token}`;
+            }
+            return req;
+        },
+        responseInterceptor: (res) => {
+            // Si la respuesta es del login y es exitosa, almacenamos el token
+            if (res.url.includes('/api/login') && res.status === 200) {
+                const token = JSON.parse(res.data).access_token;
+                localStorage.setItem('access_token', token);  // Guardar el token en localStorage
+            }
+            return res;
+        }
+    });
+};
+
+
+    </script>
+</body>
+</html>
