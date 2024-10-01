@@ -14,7 +14,9 @@ class GenerateSwaggerJson extends Command
     {
         $openapi = Generator::scan(['app/Http/Controllers/']); // Ajusta el directorio según tus necesidades
        // $jsonFile = storage_path('swagger.json'); // Ruta donde se guardará el JSON
-       $jsonFile = storage_path('swagger.json'); // Ruta donde se guardará el JSON
+
+       // guardar en la ruta puclic
+       $jsonFile =  public_path('swagger.json'); // Ruta donde se guardará el JSON
 
         file_put_contents($jsonFile, $openapi->toJson());
         $this->info('Swagger JSON generated successfully at ' . $jsonFile);
