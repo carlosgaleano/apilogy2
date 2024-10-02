@@ -58,7 +58,10 @@ class Rma extends Model
         'problemFound',
         'cancellationDate',
         'shipToAddress_id',
-        'billToAddress_id',  // Esto puede ser null si BillToAddress está vacío
+        'billToAddress_id',
+        'extended_warranty_obj_id',
+        'service_parts_obj_id',
+        // Esto puede ser null si BillToAddress está vacío
     ];
 
     // Relación con BillToAddress

@@ -6,6 +6,9 @@ use App\Models\Rma;
 use App\Models\BillToAddress;
 use App\Models\ShipToAddress;
 use App\Models\RequestVerifoneTSAAPI;
+use App\Models\PRAttribute;
+use App\Models\ExtendedWarrantyObj;
+use App\Models\ServicePartsObj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -166,7 +169,7 @@ class PartRequestController extends Controller
 
         try {
 
-          //  $this->saveRequest($request, 'prCreate');
+           $idSaveRequest= $this->saveRequest($request, 'prCreate');
 
             $validated = $request->validate([
                 'OrderCreateRequest.order.MessageId' => 'required|string',
@@ -228,6 +231,39 @@ class PartRequestController extends Controller
         }
 
 
+        if(!empty($order['ExtendedWarrantyObj'])){
+
+            $ExtendedWarrantyObj= ExtendedWarrantyObj::create([
+                'PartDescription' => $order['ExtendedWarrantyObj']['PartDescription'] ?? '',
+                'PartNumber' => $order['ExtendedWarrantyObj']['PartNumber'] ?? '',
+                'ProductCode' => $order['ExtendedWarrantyObj']['ProductCode'] ?? '',
+                'WarrantyEndDate' => $order['ExtendedWarrantyObj']['WarrantyEndDate'] ?? '',
+            ]);
+
+
+
+        }else{
+
+
+            $ExtendedWarrantyObj = null;  // Si no hay datos, no se crea el registro
+        }
+
+
+        if(!empty($order['ServicePartsObj'])){
+
+            $ServicePartsObj= ServicePartsObj::create([
+                'ServiceEndDate' => $order['ServicePartsObj']['ServiceEndDate'] ?? '',
+                'ServicePartDescription' => $order['ServicePartsObj']['ServicePartDescription'] ?? '',
+                'ServicePartNumber' => $order['ServicePartsObj']['ServicePartNumber'] ?? '',
+                'ServiceProductCode' => $order['ServicePartsObj']['ServiceProductCode'] ?? '',
+            ]);
+
+        }else{
+
+            $ServicePartsObj = null;  // Si no hay datos, no se crea el registro
+        }
+
+
            $incomingQTY=$order['IncomingQTY'] ?? null;
            $outgoingQTY=$order['outgoingQTY'] ?? null;
 
@@ -281,25 +317,33 @@ class PartRequestController extends Controller
                 'cancellationDate' => $order['cancellationDate'] ?? null,
                 'billToAddress_id' => $billToAddress ? $billToAddress->id : null,  // Si existe BillToAddress, se guarda su ID
                 'shipToAddress_id' => $shipToAddress  ?  $shipToAddress->id : null,
-
+                'extended_warranty_obj_id' => $ExtendedWarrantyObj ? $ExtendedWarrantyObj->id : null,
                 // Otros campos que necesites
             ]);
 
-            return response()->json([
+
+            // Verificar que se haya guardado correctamente el ID
+
+            $return= response()->json([
                 'status' => 'SUCCESS',
                 'messageId' => $rma->id,
                 'message' => 'RMA created successfully',
                 'data1'=>$order['OutgoingUnitPartNumber'],
                 'data' => $order,
                 'campo' => $request->input('OrderCreateRequest.order.MessageId'),
-              //  'campo2'=> $incomingQTY,
+               'campo2'=> $rma->extended_warranty_obj_id,
+               'campo3'=>$ExtendedWarrantyObj->id,
             ]);
         } catch (\Exception $e) {
-            return response()->json([
+            $return= response()->json([
                 'status' => 'ERROR',
                 'message' => $e->getMessage(),
             ], HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+
+        $this->updateSaveRequest($idSaveRequest, $return);
+
+        return $return;
     }
 
    /**
@@ -680,7 +724,7 @@ class PartRequestController extends Controller
         ]);
     }
 
-   /*  private function saveRequest( $request, $nameMetodo = null)
+    private function saveRequest( $request, $nameMetodo = null)
     {
 
 
@@ -688,12 +732,29 @@ class PartRequestController extends Controller
         $requestVerifone = new RequestVerifoneTSAAPI();
         $requestVerifone->point = $nameMetodo;
         $requestVerifone->request = json_encode($request->all());
-
+        $requestVerifone->AspNetUsersId = auth()->id();   // Obtener el ID del usuario autenticado y guardarlo
         $requestVerifone->creation = now(); // Establecer la fecha de creación aquí
-        return  $requestVerifone->save(); // Guardar el registro en la base de datos
+        $requestVerifone->save(); // Guardar el registro en la base de datos
+
+          // Retornar el ID del registro creado
+          return $requestVerifone->id;
+
+    }
+
+    private  function updateSaveRequest ($id, $response)
+    {
+        $requestVerifone = RequestVerifoneTSAAPI::findOrFail($id);
+
+        $requestVerifone->response = json_encode($response);
+        $requestVerifone->procesado=1;
 
 
-    } */
+        $requestVerifone->update(); // Guardar el registro en la base de datos
+
+        return $requestVerifone->id;
+
+    }
+
 }
 
 
