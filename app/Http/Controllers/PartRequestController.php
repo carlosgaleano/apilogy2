@@ -185,6 +185,25 @@ class PartRequestController extends Controller
 
             $order = $request->input('OrderCreateRequest.order');
 
+            foreach ($order['PRAttributes'] as $attribute) {
+                PRAttribute::create([
+                    'Name' => $attribute['Name'],
+                    'Value' => $attribute['Value'],
+                    'rmas_id'=>1,
+                ]);
+            }
+
+            return response()->json([
+                'status' => 'SUCCESS',
+                'messageId' => 1,
+                'message' => $order['PRAttributes'],
+                'data' => $order,
+                'campo' => $request->input('OrderCreateRequest.order.MessageId'),
+            ]);
+
+            // dd($order['PRAttributes']);
+
+
 
 
             if (!empty($order['BillToAddress'])) {
@@ -318,9 +337,12 @@ class PartRequestController extends Controller
                 'billToAddress_id' => $billToAddress ? $billToAddress->id : null,  // Si existe BillToAddress, se guarda su ID
                 'shipToAddress_id' => $shipToAddress  ?  $shipToAddress->id : null,
                 'extended_warranty_obj_id' => $ExtendedWarrantyObj ? $ExtendedWarrantyObj->id : null,
+                'service_parts_obj_id'=> $ServicePartsObj ? $ServicePartsObj->id : null,
                 // Otros campos que necesites
             ]);
 
+
+           // dd($order['PRAttributes']);
 
             // Verificar que se haya guardado correctamente el ID
 

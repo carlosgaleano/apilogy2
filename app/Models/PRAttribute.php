@@ -14,5 +14,6 @@ class PRAttribute extends Model
     protected $fillable = [
         'Name',
         'Value',
+        'rmas_id',
     ];
 }
