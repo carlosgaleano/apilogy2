@@ -17,7 +17,8 @@ class CreateRequestVerifoneTsaApiTable extends Migration
             $table->boolean('procesado')->default(0);
             $table->string('partrequestheaderid', 100)->nullable();
             $table->boolean('status')->default(1);
-            $table->string('partrequestdetailnumber', 5000)->default('0');
+            //$table->string('partrequestdetailnumber', 5000)->default('0');
+            $table->text('partrequestdetailnumber')->default('0');
             $table->longText('response')->nullable();
 
            // $table->primary('id'); // Establecer la clave primaria

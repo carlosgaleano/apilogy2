@@ -89,6 +89,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            'trust_server_certificate' => true, // Desactiva la verificación del certificado SSL
         ],
 
     ],

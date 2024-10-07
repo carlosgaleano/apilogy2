@@ -15,7 +15,7 @@ class AddServicePartsObjIdToRmasTable extends Migration
     {
         Schema::table('rmas', function (Blueprint $table) {
             if (!Schema::hasColumn('rmas', 'service_parts_obj_id')) {
-                $table->foreignId('service_parts_obj_id')->nullable()->constrained('service_parts_obj')->onDelete('set null');
+                $table->foreignId('service_parts_obj_id')->nullable()->constrained('service_parts_objs')->onDelete('set null');
             }
         });
     }
