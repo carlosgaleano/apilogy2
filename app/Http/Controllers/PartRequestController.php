@@ -9,6 +9,8 @@ use App\Models\RequestVerifoneTSAAPI;
 use App\Models\PRAttribute;
 use App\Models\ExtendedWarrantyObj;
 use App\Models\ServicePartsObj;
+use App\Models\RPIDID;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +30,7 @@ class PartRequestController extends Controller
  *     path="/api/prCreate",
  *     summary="Create RMA",
  *     description="Create RMA, para utilizar este método se debe estar autenticado, lo cual se hace con el método login que se encuentra al inicio de esta documentación",
- *     security={{"bearerAuth":{}}},
+ *     security={{"bearerAuth"=>{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -185,21 +187,14 @@ class PartRequestController extends Controller
 
             $order = $request->input('OrderCreateRequest.order');
 
-            foreach ($order['PRAttributes'] as $attribute) {
-                PRAttribute::create([
-                    'Name' => $attribute['Name'],
-                    'Value' => $attribute['Value'],
-                    'rmas_id'=>1,
-                ]);
-            }
 
-            return response()->json([
+         /*    return response()->json([
                 'status' => 'SUCCESS',
                 'messageId' => 1,
                 'message' => $order['PRAttributes'],
                 'data' => $order,
                 'campo' => $request->input('OrderCreateRequest.order.MessageId'),
-            ]);
+            ]); */
 
             // dd($order['PRAttributes']);
 
@@ -342,25 +337,84 @@ class PartRequestController extends Controller
             ]);
 
 
+            if(!empty($order['PRAttributes'] )){
+
+                foreach ($order['PRAttributes'] as $attribute) {
+                    PRAttribute::create([
+                        'Name' => $attribute['Name'],
+                        'Value' => $attribute['Value'],
+                        'rmas_id'=>$rma->id,
+                    ]);
+                }
+
+
+            }
+
+
+
+            if(!empty($order['RPIDs'])){
+
+                foreach ($order['RPIDs'] as $rpid) {
+                    RPIDID::create([
+                        'RPIDDescription' => $rpid['RPIDDescription'],
+                        'RPIDID' => $rpid['RPIDID'],
+                        'RPIDType' => $rpid['RPIDType'],
+                        'RPIDWarrantyType' => $rpid['RPIDWarrantyType'],
+                        'rmas_id' => $rma->id,
+                    ]);
+                }
+
+            }
+
+
            // dd($order['PRAttributes']);
 
             // Verificar que se haya guardado correctamente el ID
 
-            $return= response()->json([
+            $return_old= response()->json([
                 'status' => 'SUCCESS',
                 'messageId' => $rma->id,
                 'message' => 'RMA created successfully',
                 'data1'=>$order['OutgoingUnitPartNumber'],
-                'data' => $order,
-                'campo' => $request->input('OrderCreateRequest.order.MessageId'),
-               'campo2'=> $rma->extended_warranty_obj_id,
-               'campo3'=>$ExtendedWarrantyObj->id,
+                //'data' => $order,
+               // 'campo' => $request->input('OrderCreateRequest.order.MessageId'),
+              // 'campo2'=> $rma->extended_warranty_obj_id,
+               'campo3'=>$order['RPIDs'],
+            ]);
+
+            $return= response()->json([
+                'createCaseResponse'=>[
+                    'return'=>[
+                        "siteId"=> "",
+                        "message"=> "RMA created successfully",
+                        "merchantId"=> "",
+                        "customerSORef"=> "",
+                        "code"=> "SUCCESS",
+                        "caseId"=> $rma->id
+                    ]
+
+                ]
             ]);
         } catch (\Exception $e) {
-            $return= response()->json([
+            $return_old= response()->json([
                 'status' => 'ERROR',
                 'message' => $e->getMessage(),
             ], HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+
+            $return= response()->json([
+                'createCaseResponse'=>[
+                    'return'=>[
+                        "siteId"=> "",
+                        "message"=> $e->getMessage(),
+                        "merchantId"=> "",
+                        "customerSORef"=> "",
+                        "code"=> "FAILED",
+                        "caseId"=> 0
+                    ]
+
+                ]
+            ]);
+
         }
 
         $this->updateSaveRequest($idSaveRequest, $return);
@@ -373,7 +427,7 @@ class PartRequestController extends Controller
  *     path="/api/prUpdate/{id}",
  *     summary="Update RMA",
  *     description="Actualizar RMA. Para utilizar este método se debe estar autenticado, lo cual se hace con el método login que se encuentra al inicio de esta documentación.",
- *     security={{"bearerAuth":{}}},
+ *     security={{"bearerAuth"=>{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -533,7 +587,7 @@ class PartRequestController extends Controller
  *     path="/api/prCancel/{id}",
  *     summary="Cancel RMA",
  *     description="Cancelar RMA. Para utilizar este método se debe estar autenticado, lo cual se hace con el método login que se encuentra al inicio de esta documentación.",
- *     security={{"bearerAuth":{}}},
+ *     security={{"bearerAuth"=>{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -690,7 +744,7 @@ class PartRequestController extends Controller
  *     path="/api/acknowledge",
  *     summary="acknowledge",
  *     description="Acknowledge. Para utilizar este método se debe estar autenticado, lo cual se hace con el método login que se encuentra al inicio de esta documentación.",
- *     security={{"bearerAuth":{}}},
+ *     security={{"bearerAuth"=>{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -746,15 +800,40 @@ class PartRequestController extends Controller
         ]);
     }
 
+    private function handleRequestData(Request $request, $type)
+    {
+          // Definir una matriz de mapeo para los tipos de request
+          $requestMapping = [
+            'prCreate' => 'OrderCreateRequest.order',
+            'prUpdate' => 'OrderUpdateRequest.order',
+            // Otros tipos de request si es necesario
+        ];
+
+        // Verificar si el tipo existe en la matriz
+        if (isset($requestMapping[$type])) {
+            // Obtener los datos del request basado en el tipo
+            return $request->input($requestMapping[$type]);
+        }
+
+        // Manejar el caso de un tipo no reconocido
+        return [];
+    }
+
     private function saveRequest( $request, $nameMetodo = null)
     {
 
+          $usuario = auth()->user(); // Obtener el usuario autenticado
+          $userName = $usuario->name; // Obtener el nombre del usuario autenticado
+          $order = $this->handleRequestData($request, $nameMetodo);
 
         // Crear una nueva instancia del modelo
         $requestVerifone = new RequestVerifoneTSAAPI();
         $requestVerifone->point = $nameMetodo;
         $requestVerifone->request = json_encode($request->all());
-        $requestVerifone->AspNetUsersId = auth()->id();   // Obtener el ID del usuario autenticado y guardarlo
+        $requestVerifone->AspNetUsersId = $userName;
+        $requestVerifone->partrequestheaderid= $order['PartRequestHeaderID'] ?? '';
+        $requestVerifone->partrequestdetailnumber= $order['PartRequestDetailNumber'] ?? '';
+        //$requestVerifone->AspNetUsersId = auth()->id();   // Obtener el ID del usuario autenticado y guardarlo
         $requestVerifone->creation = now(); // Establecer la fecha de creación aquí
         $requestVerifone->save(); // Guardar el registro en la base de datos
 

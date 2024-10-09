@@ -1,0 +1,111 @@
+{
+    "OrderCreateRequest":{
+       "order":{
+          "MessageId":"790763",
+          "AppID":"",
+          "BPPServiceEndDate":null,
+          "BillToAddress":{
+             "Country":"Chile",
+             "Address3":"",
+             "City":"SANTIAGO",
+             "Address2":"",
+             "Address1":"HUERFANOS # 777, PISO 10",
+             "Contact":"LUZ MARÍA GALLEGUILLOS",
+             "PostalCode":"8320167",
+             "SiteName":"TRANSBANK S.A.",
+             "SiteID":"89338324",
+             "State":"RM",
+             "PhoneNo":"2-26317700"
+          },
+          "BillToSiteOperatingUnit":"SCL",
+          "BillingAccountNumber":"Please Specify",
+          "CancellationAuthorizationNumber":null,
+          "CancellationDate":null,
+          "Carrier":"Please Specify",
+          "CaseId":null,
+          "Condition":null,
+          "ContractID":"VFI_DEPLOYMENT",
+          "CustomerItemNumber":"",
+          "ExtendedWarrantyObj":{
+             "PartDescription":"LCD Screen 15.6 inch",
+             "PartNumber":"LCD-156-XC",
+             "ProductCode":"PRD-9452",
+             "WarrantyEndDate":"2025-12-31"
+          },
+          "ExternalOrderNumber":"TEST 3-23-2023",
+          "HeaderNotes":"",
+          "IncomingQTY":"1",
+          "IncomingUnitPartNumber":"M252-693-C7-LAB-3",
+          "IncomingUnitPartNumberDescription":"VX520 COLOR 3G/CTLS,LAB DIAL/ETH,128/32 MB DUAL SIM,STD KEYPAD,40MM",
+          "IncomingUnitSerialNumber":"390-367-661",
+          "InternalDepartmentNumber":"",
+          "Looper":"0",
+          "MRACode":"Standard Repair",
+          "Mkey":"",
+          "MoreInfoNotes":null,
+          "MsgId":null,
+          "OutgoingQTY":"1",
+          "OutgoingUnitPartNumber":"M252-693-C7-LAB-3",
+          "OutgoingUnitPartNumberDescription":"VX520 COLOR 3G/CTLS,LAB DIAL/ETH,128/32 MB DUAL SIM,STD KEYPAD,40MM",
+          "PONumber":"TEST 3-23-2023",
+          "PRCreationDate":"2023-03-23 06:07:28",
+          "PRDetailNotes":"",
+          "PRStatus":"In the Queue",
+          "PartRequestDetailNumber":"390-367-661-5",
+          "PartRequestHeaderID":"390-367-661",
+          "Priority":"P3 - Low",
+          "ProblemFound":null,
+          "ProductCode":"C3",
+          "ProductCodeDescription":"VX520 COLOR 3G",
+          "ReRepairRule":"-NA-",
+          "RepairNotes":"",
+          "RepairStatus":"Standard Repair",
+          "ReportedProblem":"",
+          "RequestType":"Repair Only",
+          "ServiceCenter":"Logytech Chile Service Center",
+          "ServicePartsObj":{
+             "ServiceEndDate":"2024-05-30",
+             "ServicePartDescription":"Power Supply Unit 400W",
+             "ServicePartNumber":"PSU-400W-98",
+             "ServiceProductCode":"PRD-1234"
+          },
+          "ShipToAddress":{
+             "Country":"Chile",
+             "Address3":"",
+             "City":"SANTIAGO",
+             "Address2":"",
+             "Address1":"HUERFANOS # 777, PISO 10",
+             "Contact":"RODRIGO LEÓN TAPIA",
+             "PostalCode":"8320167",
+             "SiteName":"TRANSBANK S.A.",
+             "SiteID":"89338324",
+             "State":"RM",
+             "PhoneNo":"9-90355427"
+          },
+          "ShipToCow":"Please Specify",
+          "ShipVia":"Please Specify",
+          "Summary":"A1-Plastic Problems",
+          "SupplyCow":"Please Specify",
+          "TID":"",
+          "UnitWarrantyType":"No Warranty",
+          "PRAttributes":[
+             {
+                "Name":"deploy_x_debit_key_slot_0",
+                "Value":" VST 04"
+             },
+             {
+                "Name":"deploy_x_debit_key_slot_1",
+                "Value":" VST 04"
+             }
+          ],
+          "RPIDs":[
+             {
+                "RPIDDescription":"Defective screen",
+                "RPIDID":"RPID12345",
+                "RPIDType":"Hardware",
+                "RPIDWarrantyType":"Extended"
+             }
+          ]
+       }
+    }
+ }

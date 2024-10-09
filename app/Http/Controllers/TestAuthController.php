@@ -8,37 +8,7 @@ use App\Models\User;
 
 class TestAuthController extends Controller
 {
-    /**
-     * @OA\Post(
-     *     path="/api/test/login",
-     *     summary="Iniciar sesión para pruebas",
-     *     description="Autenticar a un usuario en modo testing y generar un token de acceso",
-     *     tags={"Autenticación"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"email","password"},
-     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Token generado exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="access_token", type="string", example="token123456"),
-     *             @OA\Property(property="token_type", type="string", example="Bearer")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Credenciales inválidas",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Credenciales inválidas")
-     *         )
-     *     )
-     * )
-     */
+
     public function __construct()
     {
 
