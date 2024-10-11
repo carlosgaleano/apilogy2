@@ -11,6 +11,7 @@ use App\Models\ExtendedWarrantyObj;
 use App\Models\ServicePartsObj;
 use App\Models\RPIDID;
 use App\Models\User;
+use App\Models\rmas_state;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -293,48 +294,51 @@ class PartRequestController extends Controller
                 'PRDetailNotes' => $order['RepairNotes'] ?? '',
                 //'billToAddress'=> $order['billToAddress']??'',
                 'shipVia' => $order['ShipVia'] ?? '',
-                'messageType' => $order['messageType'] ?? '',
-                'headerNotes' => $order['headerNotes'] ?? '',
+                'messageType' => $order['MessageType'] ?? '',
+                'headerNotes' => $order['HeaderNotes'] ?? '',
                 'incomingQTY' =>  intval($incomingQTY),
-                'contractID' => $order['contractID'] ?? '',
+                'contractID' => $order['ContractID'] ?? '',
                 'PRStatus' => $order['PRStatus'] ?? '',
                 'PRCreationDate' => $order['PRCreationDate'] ?? '',
-                'serviceCenter' => $order['serviceCenter'] ?? '',
-                'incomingUnitPartNumberDescription' => $order['incomingUnitPartNumberDescription'] ?? '',
-                'partRequestHeaderID' => $order['partRequestHeaderID'] ?? '',
-                'summary' => $order['summary'] ?? '',
-                'mkey' => $order['mkey'] ?? '',
-                'incomingUnitSerialNumber' => $order['incomingUnitSerialNumber'] ?? '',
-                'reportedProblem' => $order['reportedProblem'] ?? '',
-                'requestType' => $order['requestType'] ?? '',
-                'repairStatus' => $order['repairStatus'] ?? '',
-                'billingAccountNumber' => $order['billingAccountNumber'] ?? '',
+                'serviceCenter' => $order['ServiceCenter'] ?? '',
+                'incomingUnitPartNumberDescription' => $order['IncomingUnitPartNumberDescription'] ?? '',
+                'partRequestHeaderID' => $order['PartRequestHeaderID'] ?? '',
+                'summary' => $order['Summary'] ?? '',
+                'mkey' => $order['Mkey'] ?? '',
+                'incomingUnitSerialNumber' => $order['IncomingUnitSerialNumber'] ?? '',
+                'reportedProblem' => $order['ReportedProblem'] ?? '',
+                'requestType' => $order['RequestType'] ?? '',
+                'repairStatus' => $order['RepairStatus'] ?? '',
+                'billingAccountNumber' => $order['BillingAccountNumber'] ?? '',
                 'MRACode' => $order['MRACode'] ?? '',
                 'incomingUnitPartNumber' => $order['IncomingUnitPartNumber'] ?? '',
-                'messageId' => $order['messageId'] ?? '',
-                'productCodeDescription' => $order['productCodeDescription'] ?? '',
-                'priority' => $order['priority'] ?? '',
-                'shipToCow' => $order['shipToCow'] ?? '',
+                'messageId' => $order['MessageId'] ?? '',
+                'productCodeDescription' => $order['ProductCodeDescription'] ?? '',
+                'priority' => $order['Priority'] ?? '',
+                'shipToCow' => $order['ShipToCow'] ?? '',
                 'TID' => $order['TID'] ?? '',
                 'carrier' => $order['carrier'] ?? '',
-                'productCode' => $order['productCode'] ?? '',
-                'internalDepartmentNumber' => $order['internalDepartmentNumber'] ?? '',
-                'partRequestDetailNumber' => $order['partRequestDetailNumber'] ?? '',
-                'supplyCow' => $order['supplyCow'] ?? '',
-                'appID' => $order['appID'] ?? '',
-                'billToSiteOperatingUnit' => $order['billToSiteOperatingUnit'] ?? '',
-                'unitWarrantyType' => $order['unitWarrantyType'] ?? '',
-                'repairNotes' => $order['repairNotes'] ?? '',
+                'productCode' => $order['ProductCode'] ?? '',
+                'internalDepartmentNumber' => $order['InternalDepartmentNumber'] ?? '',
+                'partRequestDetailNumber' => $order['PartRequestDetailNumber'] ?? '',
+                'supplyCow' => $order['SupplyCow'] ?? '',
+                'appID' => $order['AppID'] ?? '',
+                'billToSiteOperatingUnit' => $order['BillToSiteOperatingUnit'] ?? '',
+                'unitWarrantyType' => $order['UnitWarrantyType'] ?? '',
+                'repairNotes' => $order['RepairNotes'] ?? '',
                 'outgoingQTY' => $outgoingQTY ?? null,
-                'cancellationAuthorizationNumber' => $order['cancellationAuthorizationNumber'] ?? '',
-                'problemFound' => $order['problemFound'] ?? '',
-                'cancellationDate' => $order['cancellationDate'] ?? null,
+                'cancellationAuthorizationNumber' => $order['CancellationAuthorizationNumber'] ?? '',
+                'problemFound' => $order['ProblemFound'] ?? '',
+                'cancellationDate' => $order['CancellationDate'] ?? null,
                 'billToAddress_id' => $billToAddress ? $billToAddress->id : null,  // Si existe BillToAddress, se guarda su ID
                 'shipToAddress_id' => $shipToAddress  ?  $shipToAddress->id : null,
                 'extended_warranty_obj_id' => $ExtendedWarrantyObj ? $ExtendedWarrantyObj->id : null,
                 'service_parts_obj_id'=> $ServicePartsObj ? $ServicePartsObj->id : null,
                 // Otros campos que necesites
             ]);
+
+
+
 
 
             if(!empty($order['PRAttributes'] )){
@@ -366,7 +370,11 @@ class PartRequestController extends Controller
 
             }
 
-
+            $state= rmas_state::create([
+                'rma_id'=>$rma->id,
+                'state'=>'created',
+                'id_state'=>1,
+            ]);
            // dd($order['PRAttributes']);
 
             // Verificar que se haya guardado correctamente el ID
