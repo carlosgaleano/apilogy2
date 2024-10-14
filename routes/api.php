@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PartRequestController;
 use App\Http\Controllers\TestPartRequestController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Tsa4\ProcesarRma1;
+use App\Http\Controllers\ProcesarRma;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,3 +38,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('acknowledge', [PartRequestController::class, 'acknowledge']);
 });
 
+// Rutas Api TSA4
+
+Route::post('tsa4_procesar_rma', [ProcesarRma::class, 'procesar']);
