@@ -75,4 +75,14 @@ class Rma extends Model
     {
         return $this->belongsTo(ShipToAddress::class, 'shipToAddress_id');
     }
+
+    public function rmas_state()
+    {
+        return $this->hasMany(rmas_state::class, 'rma_id');
+    }
+
+    public function DmEquipoModelo()
+    {
+        return $this->hasMany(DmEquipoModelo::class,'cod_modelo' ,'incomingUnitPartNumber');
+    }
 }

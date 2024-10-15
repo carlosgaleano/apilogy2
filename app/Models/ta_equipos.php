@@ -11,8 +11,10 @@ class ta_equipos extends Model
 
     protected $table = 'ta_equipos';  // Nombre de la tabla
 
+    protected $primaryKey = 'id_equipo';
     // Indicar si no estás usando timestamps automáticos
     public $timestamps = false;
+
 
     // Campos que pueden ser asignados masivamente
     protected $fillable = [
