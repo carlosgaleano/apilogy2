@@ -70,6 +70,7 @@ class Rma extends Model
         return $this->belongsTo(BillToAddress::class, 'billToAddress_id');
     }
 
+
     // Relación con ShipToAddress
     public function shipToAddress()
     {
