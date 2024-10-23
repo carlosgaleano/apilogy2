@@ -827,18 +827,34 @@ class PartRequestController extends Controller
         return [];
     }
 
-    private function saveRequest( $request, $nameMetodo = null)
+    public function saveRequest( $request, $nameMetodo = null)
     {
 
           $usuario = auth()->user(); // Obtener el usuario autenticado
-          $userName = $usuario->name; // Obtener el nombre del usuario autenticado
-          $order = $this->handleRequestData($request, $nameMetodo);
+
+          if(is_object($usuario) && isset($usuario->name)){
+
+            $order = $this->handleRequestData($request, $nameMetodo);
+            $jsonResquest= json_encode($request->all());
+
+          }else{
+
+            $usuario = (object) array('name' => 'Tsa4');
+
+            $order=[];
+           // $jsonResquest= json_encode($request);
+           $jsonResquest=json_encode($request);
+           //$jsonResquest=null;
+
+          }
+
+          $userName = $usuario->name;
 
         // Crear una nueva instancia del modelo
         $requestVerifone = new RequestVerifoneTSAAPI();
         $requestVerifone->point = $nameMetodo;
-        $requestVerifone->request = json_encode($request->all());
-        $requestVerifone->AspNetUsersId = $userName;
+        $requestVerifone->request =  $jsonResquest ?? '{"response": "No se pudo obtener el request"}';
+        $requestVerifone->AspNetUsersId = $userName;   // Obtener el ID del usuario autenticado y guardarlo
         $requestVerifone->partrequestheaderid= $order['PartRequestHeaderID'] ?? '';
         $requestVerifone->partrequestdetailnumber= $order['PartRequestDetailNumber'] ?? '';
         //$requestVerifone->AspNetUsersId = auth()->id();   // Obtener el ID del usuario autenticado y guardarlo
