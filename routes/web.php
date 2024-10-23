@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/swagger', function () {
+    return view('swagger-ui'); // Asumiendo que has creado un archivo de vista llamado swagger-ui.blade.php
+});
