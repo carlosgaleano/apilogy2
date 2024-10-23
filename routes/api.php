@@ -41,3 +41,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 // Rutas Api TSA4
 
 Route::post('tsa4_procesar_rma', [ProcesarRma::class, 'procesar']);
+Route::post('tsa4_get_rma', [ProcesarRma::class, 'getRma']);

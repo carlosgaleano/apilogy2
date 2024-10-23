@@ -122,4 +122,26 @@ class ProcesarRma extends Controller
             ], 201);
         }
     }
+
+    public function getRma(Request $request)
+    {
+
+        $data = $request->all();
+        $id_rma = $data['id_rma'];
+        $rma = Rma::where('id', '=', $id_rma)->first();
+
+        $rmas = Rma::with('DmEquipoModelo','rmas_state','BillToAddress')
+            //->where('id', '=', $id_rma)
+              ->whereHas('rmas_state', function ($query){
+                $query->where('state', '=', 'created' );
+              })
+            ->get();
+
+        return response()->json([
+            'message' => 'data RMA por procesar',
+            'data' => $rma,
+            'consulta' => $rmas,
+
+        ], 200);
+    }
 }
